@@ -92,12 +92,11 @@ export const loginUser = async ({ email, password, userAgent }: LoginParams) => 
   appAssert(isValidatePassword, UNAUTHORIZED, 'Invalid email or password');
 
   if (user.role === Role.STUDENT) {
-    const existingSession = await SessionModel.findOne({
+    // Automatically invalidate any previous sessions for the student to enforce single session constraint
+    // while preventing the student from being locked out if they cleared their cookies.
+    await SessionModel.deleteMany({
       userId: user._id,
-      expiresAt: { $gt: Date.now() },
     });
-
-    appAssert(!existingSession, FORBIDDEN, 'You are already logged in, please logout first');
   }
 
   //create session

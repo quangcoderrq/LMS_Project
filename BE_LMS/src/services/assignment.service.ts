@@ -338,5 +338,14 @@ export const deleteAssignment = async (
 
   const assignment = await AssignmentModel.findByIdAndDelete(assignmentId);
   appAssert(assignment, NOT_FOUND, "Assignment not found");
+
+  if (assignment.fileKey) {
+    try {
+      await removeFile(assignment.fileKey);
+    } catch (err) {
+      console.error(`Failed to remove assignment file ${assignment.fileKey} from MinIO:`, err);
+    }
+  }
+
   return assignment;
 };

@@ -774,6 +774,16 @@ export const deleteLessonMaterial = async (
   }
 
   const deletedMaterial = await LessonMaterialModel.findByIdAndDelete(id);
+  appAssert(deletedMaterial, NOT_FOUND, "Material not found");
+
+  if (deletedMaterial.key && !deletedMaterial.key.startsWith("manual-materials/")) {
+    try {
+      await removeFile(deletedMaterial.key);
+    } catch (err) {
+      console.error(`Failed to remove lesson material file ${deletedMaterial.key} from MinIO:`, err);
+    }
+  }
+
   return deletedMaterial;
 };
 

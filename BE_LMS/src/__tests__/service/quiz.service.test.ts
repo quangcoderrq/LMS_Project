@@ -10,7 +10,7 @@ import {
 import type { SnapshotQuestion } from '@/types/quiz.type';
 
 jest.mock('@/models', () => ({
-  CourseModel: { findById: jest.fn() },
+  CourseModel: { findById: jest.fn(), findOne: jest.fn() },
   QuizModel: { create: jest.fn(), findById: jest.fn(), findByIdAndDelete: jest.fn() },
   EnrollmentModel: { find: jest.fn() },
   QuizAttemptModel: {
@@ -67,7 +67,7 @@ describe('Quiz Service Unit Tests', () => {
     };
 
     it('calls checkProperQuestionType when snapshotQuestions provided', async () => {
-      (CourseModel.findById as jest.Mock).mockResolvedValueOnce({ _id: 'c1' });
+      (CourseModel.findOne as jest.Mock).mockResolvedValueOnce({ _id: 'c1', status: 'ongoing' });
       (QuizModel.create as jest.Mock).mockResolvedValueOnce({ _id: 'q1' });
 
       const data = {
@@ -94,7 +94,7 @@ describe('Quiz Service Unit Tests', () => {
     });
 
     it('throws when startTime >= endTime', async () => {
-      (CourseModel.findById as jest.Mock).mockResolvedValueOnce({ _id: 'c1' });
+      (CourseModel.findOne as jest.Mock).mockResolvedValueOnce({ _id: 'c1', status: 'ongoing' });
       const now = Date.now();
       const base = {
         courseId: 'c1',
@@ -114,7 +114,7 @@ describe('Quiz Service Unit Tests', () => {
     });
 
     it('throws when course not found', async () => {
-      (CourseModel.findById as jest.Mock).mockResolvedValueOnce(null);
+      (CourseModel.findOne as jest.Mock).mockResolvedValueOnce(null);
 
       await expect(createQuiz(baseData as any, 'u1' as any, Role.ADMIN)).rejects.toThrow(
         /Course not found/
@@ -123,11 +123,11 @@ describe('Quiz Service Unit Tests', () => {
     });
 
     it('calls isTeacherOfCourse when role is TEACHER', async () => {
-      (CourseModel.findById as jest.Mock).mockResolvedValueOnce({ _id: 'c1' });
+      (CourseModel.findOne as jest.Mock).mockResolvedValueOnce({ _id: 'c1', status: 'ongoing' });
       (QuizModel.create as jest.Mock).mockResolvedValueOnce({ _id: 'q1' });
 
       await createQuiz(baseData as any, 'u1' as any, Role.TEACHER);
-      expect(isTeacherOfCourse).toHaveBeenCalledWith({ _id: 'c1' }, 'u1' as any);
+      expect(isTeacherOfCourse).toHaveBeenCalledWith({ _id: 'c1', status: 'ongoing' }, 'u1' as any);
     });
   });
 
@@ -160,7 +160,7 @@ describe('Quiz Service Unit Tests', () => {
       const now = Date.now();
       const quizDoc: any = {
         _id: 'q1',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(now - 20000),
         endTime: new Date(now - 10000),
         snapshotQuestions: [],
@@ -210,7 +210,7 @@ describe('Quiz Service Unit Tests', () => {
       const now = Date.now();
       const quizDoc: any = {
         _id: 'q3',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(now - 200000),
         endTime: new Date(now - 100000),
         snapshotQuestions: [
@@ -270,7 +270,7 @@ describe('Quiz Service Unit Tests', () => {
       const now = Date.now();
       const quizDoc: any = {
         _id: 'ongoing-q',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(now - 1000),
         endTime: new Date(now + 10000),
         snapshotQuestions: [],
@@ -321,7 +321,7 @@ describe('Quiz Service Unit Tests', () => {
       const now = Date.now();
       const quizDoc: any = {
         _id: 'ongoing-endfail',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(now - 1000),
         endTime: new Date(now + 100000),
         snapshotQuestions: [],
@@ -354,7 +354,7 @@ describe('Quiz Service Unit Tests', () => {
     it('handles password change and optional fields correctly', async () => {
       const quizDoc: any = {
         _id: 'q1',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(Date.now() - 86400000),
         endTime: new Date(Date.now() + 86400000),
         shuffleQuestions: false,
@@ -386,7 +386,7 @@ describe('Quiz Service Unit Tests', () => {
     it('removes uploaded images when question is deleted', async () => {
       const quizDoc: any = {
         _id: 'q4',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(Date.now() - 86400000 * 2),
         endTime: new Date(Date.now() - 86400000),
         snapshotQuestions: [
@@ -449,7 +449,7 @@ describe('Quiz Service Unit Tests', () => {
       const now = Date.now();
       const quizDoc: any = {
         _id: 'q1',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(now - 200000),
         endTime: new Date(now - 100000),
         // save không cần thiết ở đây nữa vì dùng findByIdAndDelete
@@ -474,7 +474,7 @@ describe('Quiz Service Unit Tests', () => {
       const now = Date.now();
       const quizDoc: any = {
         _id: 'q-ongoing-delete',
-        courseId: { _id: 'c1' },
+        courseId: { _id: 'c1', status: 'ongoing' },
         startTime: new Date(now - 1000),
         endTime: new Date(now + 100000),
         save: jest.fn().mockResolvedValue({}),

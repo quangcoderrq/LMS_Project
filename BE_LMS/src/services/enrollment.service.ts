@@ -428,11 +428,19 @@ export const createEnrollment = async (data: {
         appAssert(isValidPassword, UNAUTHORIZED, "Invalid course password");
       }
 
-      // ⬇️ BLOCK NÀY GIỜ Ở NGOÀI IF PASSWORD, NHƯ VẬY ADMIN/COURSE KO PASSWORD CŨNG ĐI QUA
       existingEnrollment.status = status;          // PENDING hoặc APPROVED
       existingEnrollment.role = role;
       existingEnrollment.method = method;
       existingEnrollment.note = note ?? existingEnrollment.note;
+
+      if (status === EnrollmentStatus.PENDING) {
+        existingEnrollment.respondedAt = undefined;
+        existingEnrollment.respondedBy = undefined;
+      } else if (status === EnrollmentStatus.APPROVED) {
+        existingEnrollment.respondedAt = new Date();
+        existingEnrollment.respondedBy = undefined;
+      }
+
       existingEnrollment.updatedAt = new Date();   // cập nhật thời gian mới nhất
 
       await existingEnrollment.save();

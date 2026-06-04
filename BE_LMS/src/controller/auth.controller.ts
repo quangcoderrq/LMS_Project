@@ -63,7 +63,9 @@ export const loginHandler = catchErrors(async (req, res) => {
 
 export const logoutHandler = catchErrors(async (req, res) => {
   const accessToken = req.cookies.accessToken as string | undefined;
-  const { payload } = verifyToken(accessToken || '');
+  const { payload } = verifyToken(accessToken || '', {
+    ignoreExpiration: true,
+  });
 
   if (payload) {
     await SessionModel.findByIdAndDelete(payload.sessionId);

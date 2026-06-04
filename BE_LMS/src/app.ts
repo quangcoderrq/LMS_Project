@@ -20,7 +20,7 @@ import { authenticate, authorize, customResponse, errorHandler } from './middlew
 //routes
 import {
   announcementRoutes,
-  assignmentRoutes,
+  assignmentRoutes, 
   attendanceRoutes,
   authRoutes,
   courseInviteRoutes,

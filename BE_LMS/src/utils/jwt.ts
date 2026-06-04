@@ -38,7 +38,7 @@ export const signToKen = (
 
 export const verifyToken = <TPayload extends object = AccessTokenPayload>(
   token: string,
-  options?: VerifyOptions & { secret: string }
+  options?: VerifyOptions & { secret?: string }
 ) => {
   const { secret = JWT_SECRET, ...verifyOpts } = options || {};
   try {

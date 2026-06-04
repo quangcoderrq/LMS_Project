@@ -48,7 +48,7 @@ export const createQuiz = async (
   role: Role
 ): Promise<IQuiz> => {
   const course = await CourseModel.findOne({
-    courseId,
+    _id: courseId,
     status: CourseStatus.ONGOING,
   });
   appAssert(course, NOT_FOUND, 'Course not found');
@@ -385,11 +385,10 @@ export const getStatisticByQuizId = async (
       max: interval.max,
       range: interval.label,
       count,
-      percentage: `${
-        Number.isFinite(count / submittedCount)
-          ? ((count / submittedCount) * 100).toFixed(2)
-          : Number(0).toFixed(2)
-      }%`,
+      percentage: `${Number.isFinite(count / submittedCount)
+        ? ((count / submittedCount) * 100).toFixed(2)
+        : Number(0).toFixed(2)
+        }%`,
     };
   });
 
