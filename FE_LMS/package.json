@@ -10,9 +10,10 @@
     "preview": "vite preview",
     "build:server": "tsc -p tsconfig.node.json",
     "start:prod": "node dist-server/server.js",
-    "postbuild": "ts-node scripts/generate-sitemap.ts"
+    "postbuild": "node scripts/generate-sitemap.js"
   },
   "dependencies": {
+    "@react-oauth/google": "^0.13.5",
     "@react-three/drei": "^10.7.6",
     "@react-three/fiber": "^9.4.0",
     "@tailwindcss/vite": "^4.1.14",

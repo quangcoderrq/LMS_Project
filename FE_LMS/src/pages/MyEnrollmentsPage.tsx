@@ -2,8 +2,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useTheme } from "../hooks/useTheme";
 import { useAuth } from "../hooks/useAuth";
-import Navbar from "../components/Navbar.tsx";
-import Sidebar from "../components/Sidebar.tsx";
+import Navbar from "../components/layout/Navbar.tsx";
+import Sidebar from "../components/layout/Sidebar.tsx";
 import http from "../utils/http";
 import { Link } from "react-router-dom";
 import { ChevronLeft, ChevronRight } from "lucide-react";

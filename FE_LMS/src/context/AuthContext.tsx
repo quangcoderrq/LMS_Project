@@ -1,12 +1,12 @@
 import React, { useState, useEffect, type ReactNode } from 'react';
-import { authService, saveCurrentUserFromApi } from '../services';
-import type { User } from '../types/auth';
+import { authService, saveCurrentUserFromApi } from "../services";
+import type { User } from "../types/auth";
 import {
   AuthContext,
   type AuthContextType,
   type SaveAccountPayload,
   type SavedAccountSummary,
-} from './AuthContextTypes';
+} from "./AuthContextTypes";
 
 const SAVED_ACCOUNTS_KEY = 'lms:savedAccounts';
 const MAX_SAVED_ACCOUNTS = 5;

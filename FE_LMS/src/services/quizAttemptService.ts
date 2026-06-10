@@ -168,9 +168,9 @@ export const quizAttemptService = {
    */
   getQuizAttemptsForGrading: async (
     quizId: string,
-    params?: import('../types/quizAttemptGrading').GetQuizAttemptsParams
-  ): Promise<import('../types/quizAttemptGrading').QuizAttemptsResponse> => {
-    const response = await http.get<import('../types/quizAttemptGrading').QuizAttemptsResponse>(
+    params?: import("../types/quizAttemptGrading").GetQuizAttemptsParams
+  ): Promise<import("../types/quizAttemptGrading").QuizAttemptsResponse> => {
+    const response = await http.get<import("../types/quizAttemptGrading").QuizAttemptsResponse>(
       `/quizzes/${quizId}/quiz-attempts`,
       { params }
     );
@@ -183,8 +183,8 @@ export const quizAttemptService = {
    */
   getAttemptDetailsForGrading: async (
     attemptId: string
-  ): Promise<import('../types/quizAttemptGrading').AttemptDetailsResponse> => {
-    const response = await http.get<import('../types/quizAttemptGrading').AttemptDetailsResponse>(
+  ): Promise<import("../types/quizAttemptGrading").AttemptDetailsResponse> => {
+    const response = await http.get<import("../types/quizAttemptGrading").AttemptDetailsResponse>(
       `/quiz-attempts/${attemptId}`
     );
     return response;
@@ -205,9 +205,9 @@ export const quizAttemptService = {
    */
   submitRegrade: async (
     attemptId: string,
-    payload: import('../types/quizAttemptGrading').RegradePayload
-  ): Promise<import('../types/quizAttemptGrading').RegradeResponse> => {
-    const response = await http.post<import('../types/quizAttemptGrading').RegradeResponse>(
+    payload: import("../types/quizAttemptGrading").RegradePayload
+  ): Promise<import("../types/quizAttemptGrading").RegradeResponse> => {
+    const response = await http.post<import("../types/quizAttemptGrading").RegradeResponse>(
       `/quiz-attempts/${attemptId}/re-grade`,
       payload
     );

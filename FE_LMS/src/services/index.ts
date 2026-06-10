@@ -2,27 +2,27 @@
 import http, { httpClient } from "../utils/http";
 
 import { type LoginRequest, type RegisterRequest, type AuthResponse, type RefreshAuthResponse, type User } from "../types/auth";
-export * from './mock';
-export * from './courseService';
-export * from './enrollmentService';
-export * from './feedbackService';
-export * from './quizQuestionService';
-export * from './subjectService';
-export * from './quizService';
-export * from './quizAttemptService';
-export * from './specialistService';
-export * from './majorService';
-export * from './userService';
-export * from './semesterService';
-export * from './attendanceService';
-export * from './forumService';
-export * from './sessionService';
-export * from './scheduleService';
-export * from './assignmentService';
-export * from './submissionService';
-export * from './announcementService';
-export * from './notificationService';
-export { webRTCService } from './webrtcService';
+export * from "./mock";
+export * from "./courseService";
+export * from "./enrollmentService";
+export * from "./feedbackService";
+export * from "./quizQuestionService";
+export * from "./subjectService";
+export * from "./quizService";
+export * from "./quizAttemptService";
+export * from "./specialistService";
+export * from "./majorService";
+export * from "./userService";
+export * from "./semesterService";
+export * from "./attendanceService";
+export * from "./forumService";
+export * from "./sessionService";
+export * from "./scheduleService";
+export * from "./assignmentService";
+export * from "./submissionService";
+export * from "./announcementService";
+export * from "./notificationService";
+export { webRTCService } from "./webrtcService";
 
 // storage keys
 const USER_STORAGE_KEY = 'lms:user';
@@ -120,6 +120,12 @@ export const authService = {
   // Get current user info (requires authentication)
   getCurrentUser: async (): Promise<User> => {
     const response = await httpClient.get<User>("/users/me", { withCredentials: true });
+    return response.data;
+  },
+
+  // Google OAuth login (receives authorization code from frontend)
+  googleLogin: async (code: string): Promise<User> => {
+    const response = await http.post<User>("/auth/google", { code });
     return response.data;
   },
 };

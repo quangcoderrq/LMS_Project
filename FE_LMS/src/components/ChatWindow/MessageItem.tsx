@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Message } from "../../services/messageService";
 import { useTheme } from "../../hooks/useTheme";
-import MarkdownContent from "../MarkdownContent";
+import MarkdownContent from "../markdown/MarkdownContent";
 import DOMPurify from "dompurify";
 
 type MessageItemProps = Message & {

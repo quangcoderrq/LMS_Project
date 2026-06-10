@@ -49,12 +49,12 @@ import {
   ApprovedCoursesPage,
 } from "../pages";
 
-import EmailVerificationPage from "../pages/EmailVerificationPage";
-import LessonMaterialDetailPage from "../pages/LessonMaterialDetailPage";
-import AssignmentDetailPage from "../pages/AssignmentDetailPage";
-import ProtectedRoute from "../components/ProtectedRoute";
-import Profile from "../pages/profile";
-import Calendar from "../components/Calendar";
+import EmailVerificationPage from "../pages/auth/EmailVerificationPage";
+import LessonMaterialDetailPage from "../pages/lessons/LessonMaterialDetailPage";
+import AssignmentDetailPage from "../pages/assignments/AssignmentDetailPage";
+import ProtectedRoute from "../components/auth/ProtectedRoute";
+import Profile from "../pages/user/profile";
+import Calendar from "../components/calendar/Calendar";
 import Chat from "../pages/Chat/Chat";
 import FloatingChatContainer from "../components/FloatingChat/FloatingChatContainer";
 

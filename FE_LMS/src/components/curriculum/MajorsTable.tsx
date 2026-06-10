@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../hooks/useTheme';
-import { majorService } from '../../services';
+import { useTheme } from "../../hooks/useTheme";
+import { majorService } from "../../services";
 import { Plus, Edit2, Trash2, Search } from 'lucide-react';
-import type { MajorNode } from '../../types/curriculum';
+import type { MajorNode } from "../../types/curriculum";
 
 interface MajorsTableProps {
     onOpenMajorModal: (major?: MajorNode) => void;

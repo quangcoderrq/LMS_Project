@@ -4,6 +4,9 @@ import type { Lesson } from "../../types/lesson";
 import { httpClient } from "../../utils/http";
 import { useAuth } from "../../hooks/useAuth";
 
+
+
+
 interface LessonCardProps {
   lesson: Lesson;
   darkMode: boolean;
@@ -42,7 +45,6 @@ const LessonCard: React.FC<LessonCardProps> = ({
   const { user } = useAuth();
   const [progressPercent, setProgressPercent] = useState<number>(0);
   const isStudent = user?.role === "student";
-
   useEffect(() => {
     const fetchProgress = async () => {
       if (!lesson.hasAccess || !isStudent) return;
@@ -252,8 +254,8 @@ const LessonCard: React.FC<LessonCardProps> = ({
                             ? "#10b981"
                             : "#059669"
                           : darkMode
-                          ? "#6366f1"
-                          : "#4f46e5",
+                            ? "#6366f1"
+                            : "#4f46e5",
                     }}
                   />
                 </div>
