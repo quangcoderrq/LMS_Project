@@ -1,5 +1,5 @@
 import { Role } from '@/types';
-import { APP_ORIGIN } from '../constants/env';
+import { APP_ORIGIN, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } from '../constants/env';
 import {
   CONFLICT,
   FORBIDDEN,
@@ -22,6 +22,7 @@ import {
 import { getPasswordResetTemplate, getVerifyEmailTemplate } from '../utils/emailTemplates';
 import { RefreshTokenPayload, refreshTokenSignOptions, signToKen, verifyToken } from '@/utils/jwt';
 import { sendMail } from '../utils/sendMail';
+import { OAuth2Client } from 'google-auth-library';
 
 export type CreateAccountParams = {
   username: string;
@@ -276,4 +277,104 @@ export const resendVerifyEmail = async (email: string) => {
   appAssert(!error, INTERNAL_SERVER_ERROR, `${error?.name} - ${error?.message}`);
   //return success message
   return { url, emailId: data?.id };
+};
+
+export type GoogleLoginParams = {
+  code: string;
+  userAgent?: string;
+};
+
+export const googleLogin = async ({ code, userAgent }: GoogleLoginParams) => {
+  try {
+    // Exchange authorization code for tokens
+    const client = new OAuth2Client(
+      GOOGLE_CLIENT_ID,
+      GOOGLE_CLIENT_SECRET,
+      APP_ORIGIN // Default redirect_uri used by @react-oauth/google library
+    );
+    
+    // Get tokens - redirect_uri matches what library used
+    const { tokens } = await client.getToken(code);
+    const idToken = tokens.id_token;
+    appAssert(idToken, UNAUTHORIZED, 'Failed to exchange authorization code');
+
+    // Verify Google ID token
+    const ticket = await client.verifyIdToken({
+      idToken,
+      audience: GOOGLE_CLIENT_ID,
+    });
+    
+    const payload = ticket.getPayload();
+    appAssert(payload, UNAUTHORIZED, 'Invalid Google token');
+    
+    const { email, name, picture, sub: googleId } = payload;
+    appAssert(email, UNAUTHORIZED, 'Email not provided by Google');
+    
+    // Find or create user
+    let user = await UserModel.findOne({ email });
+    
+    if (!user) {
+      // Create new user from Google data
+      // Extract username from email (first part before @)
+      let username = email.split('@')[0];
+      
+      // Check if username already exists, if so append random suffix
+      let usernameExists = await UserModel.exists({ username });
+      if (usernameExists) {
+        username = `${username}_${Math.random().toString(36).substr(2, 9)}`;
+      }
+      
+      const role = email.endsWith(TEACHER_EMAIL_DOMAIN) ? Role.TEACHER : Role.STUDENT;
+      
+      // Create user with random password (won't be used for Google login)
+      const randomPassword = Math.random().toString(36).slice(-12);
+      
+      user = await UserModel.create({
+        email,
+        username,
+        fullname: name || email,
+        password: randomPassword,
+        avatar_url: picture,
+        role,
+        isVerified: true, // Google users are automatically verified
+        googleId,
+      });
+    } else if (!user.isVerified) {
+      // If user exists but not verified, verify them now
+      user.isVerified = true;
+      user.googleId = googleId;
+      if (picture && !user.avatar_url) {
+        user.avatar_url = picture;
+      }
+      await user.save();
+    }
+    
+    // If it's a student, delete previous sessions (single session constraint)
+    if (user.role === Role.STUDENT) {
+      await SessionModel.deleteMany({ userId: user._id });
+    }
+    
+    // Create session
+    const session = await SessionModel.create({
+      userId: user._id,
+      userAgent,
+    });
+    
+    // Sign tokens
+    const refreshToken = signToKen({ sessionId: session._id }, refreshTokenSignOptions);
+    const accessToken = signToKen({
+      userId: user._id,
+      role: user.role,
+      sessionId: session._id,
+    });
+    
+    return {
+      user: user.response(),
+      accessToken,
+      refreshToken,
+    };
+  } catch (error: any) {
+    console.error('Google login error:', error);
+    appAssert(false, UNAUTHORIZED, error?.message || 'Invalid authorization code');
+  }
 };

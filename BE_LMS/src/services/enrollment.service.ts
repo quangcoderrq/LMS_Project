@@ -607,7 +607,7 @@ export const updateEnrollment = async (
 
   const now = new Date();
   appAssert(
-    new Date(course.endDate) > now,
+    new Date(course.endDate) > now, 
     BAD_REQUEST,
     "Cannot update enrollment for an expired course"
   );

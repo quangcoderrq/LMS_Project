@@ -2,6 +2,7 @@ import { catchErrors } from '../utils/asyncHandler';
 import { CREATED, OK, UNAUTHORIZED } from '../constants/http';
 import {
   createAccount,
+  googleLogin,
   loginUser,
   refreshUserAccessToken,
   resendVerifyEmail,
@@ -130,5 +131,20 @@ export const resendVerifyEmailHandler = catchErrors(async (req, res) => {
   return res.success(OK, {
     message: 'Verification email sent successfully',
     info: 'Check your email to verify your account',
+  });
+});
+
+export const googleLoginHandler = catchErrors(async (req, res) => {
+  const { code } = req.body;
+  appAssert(code, UNAUTHORIZED, 'Missing authorization code');
+
+  const { user, refreshToken, accessToken } = await googleLogin({
+    code,
+    userAgent: req.headers['user-agent'],
+  });
+
+  return setAuthCookies({ res, accessToken, refreshToken }).success(OK, {
+    data: user,
+    message: 'Login with Google successfully',
   });
 });

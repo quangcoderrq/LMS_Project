@@ -25,6 +25,7 @@ const UserSchema = new mongoose.Schema<IUser>(
     isVerified: { type: Boolean, required: true, default: false },
     status: { type: String, required: true, default: UserStatus.ACTIVE },
     specialistIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Specialist' }],
+    googleId: { type: String, sparse: true },
   },
   {
     timestamps: true,

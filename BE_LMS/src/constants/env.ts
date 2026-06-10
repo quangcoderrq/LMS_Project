@@ -23,6 +23,8 @@ export const APP_ORIGIN = getEnv("APP_ORIGIN", "http://localhost:3000");
 export const EMAIL_SENDER = getEnv("EMAIL_SENDER", "anhkn7@gmail.com");
 export const RESEND_API_KEY = getEnv("RESEND_API_KEY", "");
 export const PORT = getEnv("PORT", "4004");
+export const GOOGLE_CLIENT_ID = getEnv("GOOGLE_CLIENT_ID", "");
+export const GOOGLE_CLIENT_SECRET = getEnv("GOOGLE_CLIENT_SECRET", "");
 
 //BUCKET
 export const BUCKET_NAME = getEnv("BUCKET_NAME");

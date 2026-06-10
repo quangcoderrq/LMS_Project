@@ -24,6 +24,7 @@ export default interface IUser extends mongoose.Document<mongoose.Types.ObjectId
   isVerified: boolean;
   status?: UserStatus;
   specialistIds: mongoose.Types.ObjectId[];
+  googleId?: string;
   createdAt: Date;
   updatedAt: Date;
 

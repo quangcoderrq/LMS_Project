@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import {
+  googleLoginHandler,
   loginHandler,
   logoutHandler,
   refreshHandler,
@@ -16,6 +17,7 @@ const appRoutes = Router();
 
 appRoutes.post('/register', registerHandler);
 appRoutes.post('/login', loginHandler);
+appRoutes.post('/google', googleLoginHandler);
 appRoutes.get('/logout', logoutHandler);
 appRoutes.post('/refresh', refreshHandler);
 appRoutes.get('/email/verify/:code', verifyEmailHandler);

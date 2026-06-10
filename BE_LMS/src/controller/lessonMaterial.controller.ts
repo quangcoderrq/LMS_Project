@@ -238,9 +238,12 @@ export const downloadLessonMaterialController = catchErrors(
       });
     }
 
+    const disposition = req.query.disposition === "inline" ? "inline" : "attachment";
     const signedUrl = await getSignedUrl(
       downloadMaterial.key, // 24 hours expiration
-      downloadMaterial.originalName || ""
+      downloadMaterial.originalName || "",
+      24 * 60 * 60,
+      disposition
     );
 
     // Prepare data object with all material info and signedUrl

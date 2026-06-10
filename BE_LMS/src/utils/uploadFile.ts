@@ -118,12 +118,20 @@ export const getKeyFromPublicUrl = (publicUrl: string) =>
  * @param expiresIn
  * @returns
  */
-export const getSignedUrl = (key: string, filename: string, expiresIn = 24 * 60 * 60) => {
+export const getSignedUrl = (
+  key: string,
+  filename: string,
+  expiresIn = 24 * 60 * 60,
+  disposition: 'inline' | 'attachment' = 'inline'
+) => {
   try {
+    const encodedFilename = encodeURIComponent(filename || '');
+    const dispositionValue = disposition === 'attachment'
+      ? `attachment; filename="${nowLocal()}_${v4()}_${encodedFilename}"`
+      : `inline; filename="${encodedFilename}"`;
+
     return minioClient.presignedGetObject(BUCKET_NAME, key, expiresIn, {
-      'response-content-disposition': `attachment; filename="${encodeURIComponent(
-        `${nowLocal()}_${v4()}_${filename ? filename : ''}`
-      )}"`,
+      'response-content-disposition': dispositionValue,
     });
   } catch (error) {
     throw new AppError(`Get signed url error ${(error as Error).message}`, INTERNAL_SERVER_ERROR);
