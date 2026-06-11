@@ -1,41 +1,12 @@
-# Dependencies
 node_modules/
-package-lock.json
-yarn.lock
-pnpm-lock.yaml
-
-# Testing
-coverage/
-.nyc_output/
-
-# Build outputs
 dist/
 dist-server/
 build/
-
-# IDEs
-.vscode/
-.idea/
-*.sublime-*
-*.swp
-*.swo
-
-# OS
-.DS_Store
-Thumbs.db
+coverage/
+.nyc_output/
 .env
 .env.local
-
-# Git
-.git/
-.gitignore
-
-# Documentation
-README.md
-DEPLOYMENT_GUIDE.md
-*.md
-
-# Source (không cần deploy)
-src/
-public/
-scripts/
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
