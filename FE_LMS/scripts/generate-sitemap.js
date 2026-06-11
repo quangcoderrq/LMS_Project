@@ -2,12 +2,15 @@ import fs from "fs";
 import path from "path";
 import axios from "axios";
 
-const DOMAIN = "https://toandz.id.vn"; // đổi thành domain của bạn
-const OUTPUT_PATH = path.join(process.cwd(), "dist", "sitemap.xml"); // output vào thư mục build FE
+const DOMAIN = "https://lms-project-nhanthiengg123-8117s-projects.vercel.app";
+const API_BASE_URL =
+  process.env.VITE_BASE_API || "https://lms-project-t5k1.onrender.com";
+
+const OUTPUT_PATH = path.join(process.cwd(), "dist", "sitemap.xml");
 
 async function generateSitemap() {
   try {
-    const blogRes = await axios.get("http://localhost:4004/blogs");
+    const blogRes = await axios.get(`${API_BASE_URL}/blogs`);
 
     const blogs = blogRes.data.data || [];
 
