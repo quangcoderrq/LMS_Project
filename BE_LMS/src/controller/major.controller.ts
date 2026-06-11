@@ -16,7 +16,7 @@ import {
     updateMajorBySlug,
     deleteMajorById,
     deleteMajorBySlug,
-} from "../../src/services/major.service";
+} from "@/services/major.service";
 
 export const listMajorsHandler = catchErrors(async (req, res) => {
     // Validate query parameters

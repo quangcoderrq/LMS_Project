@@ -16,7 +16,7 @@ import {
   updateSpecialistBySlug,
   deleteSpecialistById,
   deleteSpecialistBySlug,
-} from "../../src/services/specialist.service";
+} from "@/services/specialist.service";
 import mongoose from "mongoose";
 
 export const listSpecialistsHandler = catchErrors(async (req, res) => {
