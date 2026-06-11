@@ -4,10 +4,10 @@
   "description": "BE_LMS - MERN + TS Backend",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only  -r tsconfig-paths/register src/index.ts",
-    "build": "tsc -p tsconfig.build.json && node -e \"require('fs').copyFileSync('package.json', 'dist/package.json')\"",
-    "start": "node -r tsconfig-paths/register dist/index.js",
-    "test": "jest"
+   "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
+  "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json && node -e \"require('fs').copyFileSync('package.json', 'dist/package.json')\"",
+  "start": "node dist/index.js",
+  "test": "jest"
   },
   "keywords": [],
   "author": "",
@@ -58,6 +58,7 @@
     "supertest": "^7.1.4",
     "ts-jest": "^29.4.5",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.17",
     "tsconfig-paths": "^4.2.0",
     "typescript": "5.9.3"
   }
