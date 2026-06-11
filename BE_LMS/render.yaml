@@ -1,0 +1,45 @@
+services:
+  - type: web
+    name: lms-backend
+    env: node
+    region: singapore
+    plan: starter
+    
+    # Build Configuration
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    
+    # Environment Variables
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URI
+        sync: false # Manual sync required
+      - key: JWT_SECRET
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: MINIO_ENDPOINT
+        sync: false
+      - key: MINIO_ACCESS_KEY
+        sync: false
+      - key: MINIO_SECRET_KEY
+        sync: false
+      - key: MINIO_BUCKET_NAME
+        value: lms-files
+      - key: RESEND_API_KEY
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: SOCKET_CORS_ORIGIN
+        sync: false
+    
+    # Healthcheck
+    healthCheckPath: /health
+    
+    # Auto-deploy from GitHub
+    autoDeploy: true
