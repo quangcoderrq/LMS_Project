@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# Dependencies
+node_modules
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+
+# Testing
+coverage
+.nyc_output
+
+# IDE
+.vscode
+.idea
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+.env
+Thumbs.db
+
+# Docs
+README.md
+DEPLOYMENT_GUIDE.md
